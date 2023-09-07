@@ -10,7 +10,7 @@ def driver():
     n = 100
     x = np.linspace(0,np.pi,n)
 # this is a function handle. You can use it to define
-# functions instead of using a subroutine like you
+# instead of using a subroutine like you
 # have to in a true low level language.
     f = lambda x: np.sin(x)
     g = lambda x: np.cos(x)
