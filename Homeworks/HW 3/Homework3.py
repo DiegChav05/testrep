@@ -1,0 +1,104 @@
+import numpy as np
+
+def driver():
+    # use routines    
+    f = lambda x: np.sin(x) -2*x +1
+    a = 0
+    b = np.pi
+
+    tol = 1e-7
+
+    [astar, ier, num_iterations] = bisection(f, a, b, tol)
+    print('Question 1c)')
+    print('the approximate root is', '{:.8f}'.format(astar))
+    #print('the error message reads:', ier)
+    #print('f(astar) =', f(astar))
+    print('Number of iterations:', '{:.8f}'.format(num_iterations))
+
+    a = 4.82
+    b = 5.2
+
+    f = lambda x: (x-5)**9
+
+    tol = 1e-4
+
+    [astar, ier, num_iterations] = bisection(f, a, b, tol)
+    print('Question 2a)')
+    print('the approximate root is', astar)
+    print('the error message reads:', ier)
+    #print('f(astar) =', f(astar))
+    print('Number of iterations:', '{:.8f}'.format(num_iterations))
+
+    #Expanded version of (x-5)^9
+
+    f = lambda x: x**9 - 45*x**8 + 900*x**7 - 12600*x**6 + 126000*x**5 - 907200*x**4 + 4536000*x**3 - 15120000*x**2 + 30240000*x - 1953125
+
+
+    [astar, ier, num_iterations] = bisection(f, a, b, tol)
+    print('Question 2b)')
+    print('the approximate root is', astar)
+    print('the error message reads:', ier)
+    #print('f(astar) =', f(astar))
+    print('Number of iterations:', '{:.8f}'.format(num_iterations))
+
+# define routines
+def bisection(f, a, b, tol):
+    """
+    Inputs:
+        f, a, b   - function and endpoints of the initial interval
+        tol       - bisection stops when the interval length < tol
+
+    Returns:
+        astar     - approximation of the root
+        ier       - error message
+                    - ier = 1 => Failed
+                    - ier = 0 == success
+        num_iterations - number of iterations taken to find the root
+    """
+
+    # first verify there is a root we can find in the interval
+    fa = f(a)
+    fb = f(b)
+    if fa * fb > 0:
+        ier = 1
+        astar = a
+        num_iterations = 0
+        return [astar, ier, num_iterations]
+
+    # verify endpoints are not a root
+    if fa == 0:
+        astar = a
+        ier = 0
+        num_iterations = 0
+        return [astar, ier, num_iterations]
+
+    if fb == 0:
+        astar = b
+        ier = 0
+        num_iterations = 0
+        return [astar, ier, num_iterations]
+
+    count = 0
+    d = 0.5 * (a + b)
+    while abs(d - a) > tol:
+        fd = f(d)
+        if fd == 0:
+            astar = d
+            ier = 0
+            num_iterations = count
+            return [astar, ier, num_iterations]
+        
+        if fa * fd < 0:
+            b = d
+        else:
+            a = d
+            fa = fd
+        d = 0.5 * (a + b)
+        count += 1
+
+    astar = d
+    ier = 0
+    num_iterations = count
+    return [astar, ier, num_iterations]
+
+driver()
