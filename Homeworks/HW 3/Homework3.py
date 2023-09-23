@@ -30,6 +30,7 @@ def driver():
     #print('f(astar) =', f(astar))
     print('Number of iterations:', '{:.8f}'.format(num_iterations))
 
+
     #Expanded version of (x-5)^9
 
     f = lambda x: x**9 - 45*x**8 + 900*x**7 - 12600*x**6 + 126000*x**5 - 907200*x**4 + 4536000*x**3 - 15120000*x**2 + 30240000*x - 1953125
@@ -40,7 +41,20 @@ def driver():
     print('the approximate root is', astar)
     print('the error message reads:', ier)
     #print('f(astar) =', f(astar))
-    print('Number of iterations:', '{:.8f}'.format(num_iterations))
+    print('Number of iterations:', num_iterations)
+
+    tol = 1e-3
+
+    f = lambda x: x**3 + x - 4
+    a = 1
+    b = 4
+
+    [astar, ier, num_iterations] = bisection(f, a, b, tol)
+    print('Question 3b)')
+    print('the approximate root is', astar)
+    print('the error message reads:', ier)
+    #print('f(astar) =', f(astar))
+    print('Number of iterations:', '{:.0f}'.format(num_iterations))
 
     print('Question 5a)')
     print('There are 5 zero crossings')
@@ -129,24 +143,23 @@ def bisection(f, a, b, tol):
         return [astar, ier, num_iterations]
 
     count = 0
-    d = 0.5 * (a + b)
-    while abs(d - a) > tol:
+    while abs(b - a) > tol:
+        d = 0.5 * (a + b)
         fd = f(d)
         if fd == 0:
             astar = d
             ier = 0
             num_iterations = count
             return [astar, ier, num_iterations]
-        
+
         if fa * fd < 0:
             b = d
         else:
             a = d
-            fa = fd
-        d = 0.5 * (a + b)
+
         count += 1
 
-    astar = d
+    astar = 0.5 * (a + b)
     ier = 0
     num_iterations = count
     return [astar, ier, num_iterations]
