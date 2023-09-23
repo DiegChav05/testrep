@@ -1,4 +1,5 @@
 import numpy as np
+from matplotlib import pyplot as plt 
 
 def driver():
     # use routines    
@@ -40,6 +41,55 @@ def driver():
     print('the error message reads:', ier)
     #print('f(astar) =', f(astar))
     print('Number of iterations:', '{:.8f}'.format(num_iterations))
+
+    print('Question 5a)')
+    print('There are 5 zero crossings')
+
+    ####
+    #Question 5
+    x = np.arange(-1*np.pi, 3 * np.pi, 0.1)  
+    y = x - (4 * np.sin(2*x)) - 3
+
+  
+    plt.title("Question 5a") 
+    plt.xlabel("x axis") 
+    plt.ylabel("y axis") 
+    plt.axhline(y = 0, color = 'k', linestyle = '-')
+    plt.plot(x, y) 
+    plt.show()
+
+    #f1 = lambda x: - np.sin(2*x) + (5*x)/4 - 3/4  
+
+    g = lambda x: -np.sin(2 * x) + 5 * x / 4 - 3 / 4
+
+    initial_guess = 1.0  # You can choose a different initial guess
+    tolerance = 1e-8
+    max_iterations = 1000
+
+    root, iterations = fixed_point(g,initial_guess, tolerance, max_iterations)
+
+    if root is not None:
+        print('the approximate root is', '{:.10f}'.format(-root))
+    else:
+        print("Root not found within the maximum number of iterations.")
+
+        g = lambda x: -np.sin(2 * x) + 5 * x / 4 - 3 / 4
+
+    initial_guess = .9  # You can choose a different initial guess
+    tolerance = 1e-12
+    max_iterations = 1000
+
+    root, iterations = fixed_point(g,initial_guess, tolerance, max_iterations)
+
+    if root is not None:
+        print('the approximate root is', '{:.10f}'.format(-root))
+    else:
+        print("Root not found within the maximum number of iterations.")
+
+
+
+
+
 
 # define routines
 def bisection(f, a, b, tol):
@@ -100,5 +150,18 @@ def bisection(f, a, b, tol):
     ier = 0
     num_iterations = count
     return [astar, ier, num_iterations]
+
+def fixed_point(g,initial_guess, tolerance, max_iterations):
+    x = initial_guess
+    for i in range(max_iterations):
+        x_next = g(x)
+        if abs(x_next - x) < tolerance:
+            return x_next, i+1  # Return the root and the number of iterations
+        x = x_next
+
+    return None, max_iterations  # Return None if max_iterations reached
+
+
+
 
 driver()
